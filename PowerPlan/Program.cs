@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace PowerPlan
@@ -79,7 +80,7 @@ namespace PowerPlan
 
             MenuItem exitMenuItem = new MenuItem();
             exitMenuItem.Index = i++;
-            exitMenuItem.Text = Resources.strings.Close;
+            exitMenuItem.Text = Resources.strings.ResourceManager.GetString("Close", CultureInfo.CurrentUICulture);
             exitMenuItem.Click += new EventHandler(exitMenu);
             menuItems.Add(exitMenuItem);
 
