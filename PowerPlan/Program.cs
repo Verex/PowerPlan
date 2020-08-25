@@ -30,13 +30,15 @@ namespace PowerPlan
             notify.Text = "Power Plan";
             notify.ContextMenu = menu;
             notify.Visible = true;
-            //notify.Click += new EventHandler(NotifyClick);
 
             Application.Run();
 
             notify.Visible = false;
         }
 
+        /// <summary>
+        /// Updates each menu item from the power plans state.
+        /// </summary>
         private static void RefreshMenuItems()
         {
             foreach (KeyValuePair<Guid, MenuItem> pair in plans)
@@ -45,6 +47,10 @@ namespace PowerPlan
             }
         }
 
+        /// <summary>
+        /// Construct all of the initial menu items.
+        /// </summary>
+        /// <returns>An array of MenuItems.</returns>
         private static MenuItem[] CreateMenuItems()
         {
             List<MenuItem> menuItems = new List<MenuItem>();
@@ -73,13 +79,18 @@ namespace PowerPlan
 
             MenuItem exitMenuItem = new MenuItem();
             exitMenuItem.Index = i++;
-            exitMenuItem.Text = "Exit";
+            exitMenuItem.Text = Resources.strings.Close;
             exitMenuItem.Click += new EventHandler(exitMenu);
             menuItems.Add(exitMenuItem);
 
             return menuItems.ToArray();
         }
 
+        /// <summary>
+        /// Callback for exiting the application.
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="e"></param>
         private static void exitMenu(object Sender, EventArgs e)
         {
             Application.Exit();
