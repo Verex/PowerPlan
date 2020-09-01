@@ -7,8 +7,6 @@ namespace PowerPlan
 {
     class Power
     {
-        public static Dictionary<Guid, Plan> Plans { get; private set; } = new Dictionary<Guid, Plan>();
-
         [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
         private static extern uint PowerEnumerate(IntPtr RootPowerKey, IntPtr SchemeGuid, IntPtr SubGroupOfPowerSettingGuid, UInt32 AcessFlags, UInt32 Index, ref Guid Buffer, ref UInt32 BufferSize);
 
@@ -28,7 +26,7 @@ namespace PowerPlan
             ACCESS_INDIVIDUAL_SETTING = 18
         }
 
-        private static IEnumerable<Guid> GetAll()
+        public static IEnumerable<Guid> GetSchemes()
         {
             var schemeGuid = Guid.Empty;
 
@@ -42,7 +40,7 @@ namespace PowerPlan
             }
         }
 
-        private static string ReadFriendlyName(Guid schemeGuid)
+        public static string ReadFriendlyName(Guid schemeGuid)
         {
             uint sizeName = 1024;
             IntPtr pSizeName = Marshal.AllocHGlobal((int)sizeName);
@@ -64,8 +62,7 @@ namespace PowerPlan
 
         public static void SetActiveScheme(Guid schemeGuid)
         {
-            if (Plans.ContainsKey(schemeGuid))
-                PowerSetActiveScheme(IntPtr.Zero, ref schemeGuid);
+            PowerSetActiveScheme(IntPtr.Zero, ref schemeGuid);
         }
         
         public static Guid GetActiveScheme()
@@ -76,17 +73,6 @@ namespace PowerPlan
                 throw new Win32Exception();
 
             return (Guid)Marshal.PtrToStructure(activeGuid, typeof(Guid));
-        }
-
-        public static void GetPlans()
-        {
-            Guid activeScheme = GetActiveScheme();
-            var guidPlans = GetAll();
-
-            foreach (Guid guidPlan in guidPlans)
-            {
-                Plans[guidPlan] = new Plan() { Name = ReadFriendlyName(guidPlan), Active = guidPlan == activeScheme };
-            }
         }
     }
 }

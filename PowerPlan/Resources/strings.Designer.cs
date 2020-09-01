@@ -68,5 +68,14 @@ namespace PowerPlan.Resources {
                 return ResourceManager.GetString("Close", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power Plan.
+        /// </summary>
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
     }
 }
